@@ -37,9 +37,9 @@ message UploadImageResponse {
   uint32 size = 2;
 }
 
-service ImageService {
+service UploadService {
 
-  rpc SearchLaptop(SearchImageRequest) returns (stream SearchImageResponse) {
+  rpc SearchImage(SearchImageRequest) returns (stream SearchImageResponse) {
     option (google.api.http) = {
       get : "/v1/search"
     };
