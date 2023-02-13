@@ -18,28 +18,28 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ImageServiceClient is the client API for ImageService service.
+// UploadServiceClient is the client API for UploadService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ImageServiceClient interface {
-	SearchLaptop(ctx context.Context, in *SearchImageRequest, opts ...grpc.CallOption) (ImageService_SearchLaptopClient, error)
-	UploadImage(ctx context.Context, opts ...grpc.CallOption) (ImageService_UploadImageClient, error)
+type UploadServiceClient interface {
+	SearchImage(ctx context.Context, in *SearchImageRequest, opts ...grpc.CallOption) (UploadService_SearchImageClient, error)
+	UploadImage(ctx context.Context, opts ...grpc.CallOption) (UploadService_UploadImageClient, error)
 }
 
-type imageServiceClient struct {
+type uploadServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewImageServiceClient(cc grpc.ClientConnInterface) ImageServiceClient {
-	return &imageServiceClient{cc}
+func NewUploadServiceClient(cc grpc.ClientConnInterface) UploadServiceClient {
+	return &uploadServiceClient{cc}
 }
 
-func (c *imageServiceClient) SearchLaptop(ctx context.Context, in *SearchImageRequest, opts ...grpc.CallOption) (ImageService_SearchLaptopClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ImageService_ServiceDesc.Streams[0], "/pb.ImageService/SearchLaptop", opts...)
+func (c *uploadServiceClient) SearchImage(ctx context.Context, in *SearchImageRequest, opts ...grpc.CallOption) (UploadService_SearchImageClient, error) {
+	stream, err := c.cc.NewStream(ctx, &UploadService_ServiceDesc.Streams[0], "/pb.UploadService/SearchImage", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &imageServiceSearchLaptopClient{stream}
+	x := &uploadServiceSearchImageClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -49,16 +49,16 @@ func (c *imageServiceClient) SearchLaptop(ctx context.Context, in *SearchImageRe
 	return x, nil
 }
 
-type ImageService_SearchLaptopClient interface {
+type UploadService_SearchImageClient interface {
 	Recv() (*SearchImageResponse, error)
 	grpc.ClientStream
 }
 
-type imageServiceSearchLaptopClient struct {
+type uploadServiceSearchImageClient struct {
 	grpc.ClientStream
 }
 
-func (x *imageServiceSearchLaptopClient) Recv() (*SearchImageResponse, error) {
+func (x *uploadServiceSearchImageClient) Recv() (*SearchImageResponse, error) {
 	m := new(SearchImageResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -66,30 +66,30 @@ func (x *imageServiceSearchLaptopClient) Recv() (*SearchImageResponse, error) {
 	return m, nil
 }
 
-func (c *imageServiceClient) UploadImage(ctx context.Context, opts ...grpc.CallOption) (ImageService_UploadImageClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ImageService_ServiceDesc.Streams[1], "/pb.ImageService/UploadImage", opts...)
+func (c *uploadServiceClient) UploadImage(ctx context.Context, opts ...grpc.CallOption) (UploadService_UploadImageClient, error) {
+	stream, err := c.cc.NewStream(ctx, &UploadService_ServiceDesc.Streams[1], "/pb.UploadService/UploadImage", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &imageServiceUploadImageClient{stream}
+	x := &uploadServiceUploadImageClient{stream}
 	return x, nil
 }
 
-type ImageService_UploadImageClient interface {
+type UploadService_UploadImageClient interface {
 	Send(*UploadImageRequest) error
 	CloseAndRecv() (*UploadImageResponse, error)
 	grpc.ClientStream
 }
 
-type imageServiceUploadImageClient struct {
+type uploadServiceUploadImageClient struct {
 	grpc.ClientStream
 }
 
-func (x *imageServiceUploadImageClient) Send(m *UploadImageRequest) error {
+func (x *uploadServiceUploadImageClient) Send(m *UploadImageRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *imageServiceUploadImageClient) CloseAndRecv() (*UploadImageResponse, error) {
+func (x *uploadServiceUploadImageClient) CloseAndRecv() (*UploadImageResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
@@ -100,78 +100,78 @@ func (x *imageServiceUploadImageClient) CloseAndRecv() (*UploadImageResponse, er
 	return m, nil
 }
 
-// ImageServiceServer is the server API for ImageService service.
-// All implementations must embed UnimplementedImageServiceServer
+// UploadServiceServer is the server API for UploadService service.
+// All implementations must embed UnimplementedUploadServiceServer
 // for forward compatibility
-type ImageServiceServer interface {
-	SearchLaptop(*SearchImageRequest, ImageService_SearchLaptopServer) error
-	UploadImage(ImageService_UploadImageServer) error
-	mustEmbedUnimplementedImageServiceServer()
+type UploadServiceServer interface {
+	SearchImage(*SearchImageRequest, UploadService_SearchImageServer) error
+	UploadImage(UploadService_UploadImageServer) error
+	mustEmbedUnimplementedUploadServiceServer()
 }
 
-// UnimplementedImageServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedImageServiceServer struct {
+// UnimplementedUploadServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedUploadServiceServer struct {
 }
 
-func (UnimplementedImageServiceServer) SearchLaptop(*SearchImageRequest, ImageService_SearchLaptopServer) error {
-	return status.Errorf(codes.Unimplemented, "method SearchLaptop not implemented")
+func (UnimplementedUploadServiceServer) SearchImage(*SearchImageRequest, UploadService_SearchImageServer) error {
+	return status.Errorf(codes.Unimplemented, "method SearchImage not implemented")
 }
-func (UnimplementedImageServiceServer) UploadImage(ImageService_UploadImageServer) error {
+func (UnimplementedUploadServiceServer) UploadImage(UploadService_UploadImageServer) error {
 	return status.Errorf(codes.Unimplemented, "method UploadImage not implemented")
 }
-func (UnimplementedImageServiceServer) mustEmbedUnimplementedImageServiceServer() {}
+func (UnimplementedUploadServiceServer) mustEmbedUnimplementedUploadServiceServer() {}
 
-// UnsafeImageServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ImageServiceServer will
+// UnsafeUploadServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UploadServiceServer will
 // result in compilation errors.
-type UnsafeImageServiceServer interface {
-	mustEmbedUnimplementedImageServiceServer()
+type UnsafeUploadServiceServer interface {
+	mustEmbedUnimplementedUploadServiceServer()
 }
 
-func RegisterImageServiceServer(s grpc.ServiceRegistrar, srv ImageServiceServer) {
-	s.RegisterService(&ImageService_ServiceDesc, srv)
+func RegisterUploadServiceServer(s grpc.ServiceRegistrar, srv UploadServiceServer) {
+	s.RegisterService(&UploadService_ServiceDesc, srv)
 }
 
-func _ImageService_SearchLaptop_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _UploadService_SearchImage_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(SearchImageRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(ImageServiceServer).SearchLaptop(m, &imageServiceSearchLaptopServer{stream})
+	return srv.(UploadServiceServer).SearchImage(m, &uploadServiceSearchImageServer{stream})
 }
 
-type ImageService_SearchLaptopServer interface {
+type UploadService_SearchImageServer interface {
 	Send(*SearchImageResponse) error
 	grpc.ServerStream
 }
 
-type imageServiceSearchLaptopServer struct {
+type uploadServiceSearchImageServer struct {
 	grpc.ServerStream
 }
 
-func (x *imageServiceSearchLaptopServer) Send(m *SearchImageResponse) error {
+func (x *uploadServiceSearchImageServer) Send(m *SearchImageResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _ImageService_UploadImage_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ImageServiceServer).UploadImage(&imageServiceUploadImageServer{stream})
+func _UploadService_UploadImage_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(UploadServiceServer).UploadImage(&uploadServiceUploadImageServer{stream})
 }
 
-type ImageService_UploadImageServer interface {
+type UploadService_UploadImageServer interface {
 	SendAndClose(*UploadImageResponse) error
 	Recv() (*UploadImageRequest, error)
 	grpc.ServerStream
 }
 
-type imageServiceUploadImageServer struct {
+type uploadServiceUploadImageServer struct {
 	grpc.ServerStream
 }
 
-func (x *imageServiceUploadImageServer) SendAndClose(m *UploadImageResponse) error {
+func (x *uploadServiceUploadImageServer) SendAndClose(m *UploadImageResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *imageServiceUploadImageServer) Recv() (*UploadImageRequest, error) {
+func (x *uploadServiceUploadImageServer) Recv() (*UploadImageRequest, error) {
 	m := new(UploadImageRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -179,22 +179,22 @@ func (x *imageServiceUploadImageServer) Recv() (*UploadImageRequest, error) {
 	return m, nil
 }
 
-// ImageService_ServiceDesc is the grpc.ServiceDesc for ImageService service.
+// UploadService_ServiceDesc is the grpc.ServiceDesc for UploadService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ImageService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.ImageService",
-	HandlerType: (*ImageServiceServer)(nil),
+var UploadService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.UploadService",
+	HandlerType: (*UploadServiceServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "SearchLaptop",
-			Handler:       _ImageService_SearchLaptop_Handler,
+			StreamName:    "SearchImage",
+			Handler:       _UploadService_SearchImage_Handler,
 			ServerStreams: true,
 		},
 		{
 			StreamName:    "UploadImage",
-			Handler:       _ImageService_UploadImage_Handler,
+			Handler:       _UploadService_UploadImage_Handler,
 			ClientStreams: true,
 		},
 	},

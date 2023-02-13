@@ -32,21 +32,21 @@ var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
 var (
-	filter_ImageService_SearchLaptop_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_UploadService_SearchImage_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_ImageService_SearchLaptop_0(ctx context.Context, marshaler runtime.Marshaler, client ImageServiceClient, req *http.Request, pathParams map[string]string) (ImageService_SearchLaptopClient, runtime.ServerMetadata, error) {
+func request_UploadService_SearchImage_0(ctx context.Context, marshaler runtime.Marshaler, client UploadServiceClient, req *http.Request, pathParams map[string]string) (UploadService_SearchImageClient, runtime.ServerMetadata, error) {
 	var protoReq SearchImageRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ImageService_SearchLaptop_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_UploadService_SearchImage_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.SearchLaptop(ctx, &protoReq)
+	stream, err := client.SearchImage(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
 	}
@@ -59,7 +59,7 @@ func request_ImageService_SearchLaptop_0(ctx context.Context, marshaler runtime.
 
 }
 
-func request_ImageService_UploadImage_0(ctx context.Context, marshaler runtime.Marshaler, client ImageServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_UploadService_UploadImage_0(ctx context.Context, marshaler runtime.Marshaler, client UploadServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var metadata runtime.ServerMetadata
 	stream, err := client.UploadImage(ctx)
 	if err != nil {
@@ -103,20 +103,20 @@ func request_ImageService_UploadImage_0(ctx context.Context, marshaler runtime.M
 
 }
 
-// RegisterImageServiceHandlerServer registers the http handlers for service ImageService to "mux".
-// UnaryRPC     :call ImageServiceServer directly.
+// RegisterUploadServiceHandlerServer registers the http handlers for service UploadService to "mux".
+// UnaryRPC     :call UploadServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterImageServiceHandlerFromEndpoint instead.
-func RegisterImageServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server ImageServiceServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterUploadServiceHandlerFromEndpoint instead.
+func RegisterUploadServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server UploadServiceServer) error {
 
-	mux.Handle("GET", pattern_ImageService_SearchLaptop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UploadService_SearchImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 		return
 	})
 
-	mux.Handle("POST", pattern_ImageService_UploadImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UploadService_UploadImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -126,9 +126,9 @@ func RegisterImageServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 	return nil
 }
 
-// RegisterImageServiceHandlerFromEndpoint is same as RegisterImageServiceHandler but
+// RegisterUploadServiceHandlerFromEndpoint is same as RegisterUploadServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterImageServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterUploadServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -148,61 +148,61 @@ func RegisterImageServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.S
 		}()
 	}()
 
-	return RegisterImageServiceHandler(ctx, mux, conn)
+	return RegisterUploadServiceHandler(ctx, mux, conn)
 }
 
-// RegisterImageServiceHandler registers the http handlers for service ImageService to "mux".
+// RegisterUploadServiceHandler registers the http handlers for service UploadService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterImageServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterImageServiceHandlerClient(ctx, mux, NewImageServiceClient(conn))
+func RegisterUploadServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterUploadServiceHandlerClient(ctx, mux, NewUploadServiceClient(conn))
 }
 
-// RegisterImageServiceHandlerClient registers the http handlers for service ImageService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ImageServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ImageServiceClient"
+// RegisterUploadServiceHandlerClient registers the http handlers for service UploadService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UploadServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UploadServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "ImageServiceClient" to call the correct interceptors.
-func RegisterImageServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client ImageServiceClient) error {
+// "UploadServiceClient" to call the correct interceptors.
+func RegisterUploadServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client UploadServiceClient) error {
 
-	mux.Handle("GET", pattern_ImageService_SearchLaptop_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_UploadService_SearchImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/pb.ImageService/SearchLaptop", runtime.WithHTTPPathPattern("/v1/search"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/pb.UploadService/SearchImage", runtime.WithHTTPPathPattern("/v1/search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ImageService_SearchLaptop_0(ctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UploadService_SearchImage_0(ctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ImageService_SearchLaptop_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_UploadService_SearchImage_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_ImageService_UploadImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_UploadService_UploadImage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/pb.ImageService/UploadImage", runtime.WithHTTPPathPattern("/v1/upload_image"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/pb.UploadService/UploadImage", runtime.WithHTTPPathPattern("/v1/upload_image"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_ImageService_UploadImage_0(ctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_UploadService_UploadImage_0(ctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_ImageService_UploadImage_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_UploadService_UploadImage_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -210,13 +210,13 @@ func RegisterImageServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 }
 
 var (
-	pattern_ImageService_SearchLaptop_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "search"}, ""))
+	pattern_UploadService_SearchImage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "search"}, ""))
 
-	pattern_ImageService_UploadImage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "upload_image"}, ""))
+	pattern_UploadService_UploadImage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "upload_image"}, ""))
 )
 
 var (
-	forward_ImageService_SearchLaptop_0 = runtime.ForwardResponseStream
+	forward_UploadService_SearchImage_0 = runtime.ForwardResponseStream
 
-	forward_ImageService_UploadImage_0 = runtime.ForwardResponseMessage
+	forward_UploadService_UploadImage_0 = runtime.ForwardResponseMessage
 )
