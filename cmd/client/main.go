@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"uploadService/cmd/client/upload"
 )
@@ -14,7 +15,8 @@ func main() {
 		log.Fatalln("Missing file path")
 	}
 
-	conn, err := grpc.Dial(":50051", grpc.WithInsecure())
+	conn, err := grpc.Dial(":50051",
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalln(err)
 	}
