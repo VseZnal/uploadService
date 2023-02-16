@@ -11,10 +11,11 @@ service UploadService {
 }
 
 message UploadRequest {
-  string mime = 1;
-  bytes chunk = 2;
+  string name = 1;
+  bytes  chunk = 2;
 }
 
 message UploadResponse {
   string name = 1;
+  google.protobuf.Timestamp created_at = 2;
 }
