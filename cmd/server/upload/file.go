@@ -3,19 +3,19 @@ package upload
 import "bytes"
 
 type File struct {
-	name   string
-	buffer *bytes.Buffer
+	Name   string
+	Buffer *bytes.Buffer
 }
 
 func NewFile(name string) *File {
 	return &File{
-		name:   name,
-		buffer: &bytes.Buffer{},
+		Name:   name,
+		Buffer: &bytes.Buffer{},
 	}
 }
 
 func (f *File) Write(chunk []byte) error {
-	_, err := f.buffer.Write(chunk)
+	_, err := f.Buffer.Write(chunk)
 
 	return err
 }
