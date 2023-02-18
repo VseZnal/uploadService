@@ -2,20 +2,19 @@ package main
 
 import (
 	"context"
-	"flag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 	"log"
 	"uploadService/cmd/client/upload"
 )
 
 func main() {
-	flag.Parse()
-	if flag.NArg() == 0 {
-		log.Fatalln("Missing file path")
-	}
-
-	conn, err := grpc.Dial(":50051",
+	//flag.Parse()
+	//if flag.NArg() == 0 {
+	//	log.Fatalln("Missing file path")
+	//}
+	conn, err := grpc.Dial("localhost:8080",
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalln(err)
@@ -23,7 +22,13 @@ func main() {
 	defer conn.Close()
 
 	client := upload.NewClient(conn)
-	name, err := client.Upload(context.Background(), flag.Arg(0))
+	//"/home/vseznal/t4k6licnFdc.jpg"
+
+	header := metadata.New(map[string]string{"name": "zxc.jpg"})
+	ctx := metadata.NewOutgoingContext(context.Background(), header)
+
+	name, err := client.Upload(ctx, "/home/vseznal/t4k6licnFdc.jpg")
+
 	if err != nil {
 		log.Fatalln(err)
 	}
