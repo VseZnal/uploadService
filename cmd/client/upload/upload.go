@@ -3,7 +3,6 @@ package upload
 import (
 	"context"
 	"io"
-	"log"
 	"os"
 	"time"
 	proto_list_album_service "uploadService/proto"
@@ -27,13 +26,11 @@ func (c Client) Upload(ctx context.Context, file string) (string, error) {
 
 	stream, err := c.client.Upload(ctx)
 	if err != nil {
-		log.Println("client upload.go err 1")
 		return "", err
 	}
 
 	fil, err := os.Open(file)
 	if err != nil {
-		log.Println("client upload.go err 2")
 		return "", err
 	}
 
