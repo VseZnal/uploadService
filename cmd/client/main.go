@@ -10,10 +10,7 @@ import (
 )
 
 func main() {
-	//flag.Parse()
-	//if flag.NArg() == 0 {
-	//	log.Fatalln("Missing file path")
-	//}
+
 	conn, err := grpc.Dial("localhost:8080",
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -22,7 +19,6 @@ func main() {
 	defer conn.Close()
 
 	client := upload.NewClient(conn)
-	//"/home/vseznal/t4k6licnFdc.jpg"
 
 	header := metadata.New(map[string]string{"name": "zxc.jpg"})
 	ctx := metadata.NewOutgoingContext(context.Background(), header)
