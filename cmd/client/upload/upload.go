@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"time"
+	"uploadService/libs/errors"
 	proto_list_album_service "uploadService/proto"
 
 	"google.golang.org/grpc"
@@ -26,15 +27,14 @@ func (c Client) Upload(ctx context.Context, file string) (string, error) {
 
 	stream, err := c.client.Upload(ctx)
 	if err != nil {
-		return "", err
+		return "", errors.LogError(err)
 	}
 
 	fil, err := os.Open(file)
 	if err != nil {
-		return "", err
+		return "", errors.LogError(err)
 	}
 
-	// Max 1KB size per stream.
 	buf := make([]byte, 1024)
 
 	for {
@@ -43,11 +43,11 @@ func (c Client) Upload(ctx context.Context, file string) (string, error) {
 			break
 		}
 		if err != nil {
-			return "", err
+			return "", errors.LogError(err)
 		}
 
 		if err := stream.Send(&proto_list_album_service.UploadRequest{Chunk: buf[:num]}); err != nil {
-			return "", err
+			return "", errors.LogError(err)
 		}
 	}
 

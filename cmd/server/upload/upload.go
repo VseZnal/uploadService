@@ -4,6 +4,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"io"
 	proto_list_album_service "uploadService/proto"
 )
@@ -11,6 +12,7 @@ import (
 type Server struct {
 	proto_list_album_service.UnimplementedUploadServiceServer
 	storage Manager
+	limit   bool
 }
 
 func NewServer(storage Manager) Server {
@@ -27,10 +29,13 @@ func (s Server) Upload(stream proto_list_album_service.UploadService_UploadServe
 	for {
 		req, err := stream.Recv()
 		if err == io.EOF {
-			if err := s.storage.Store(file); err != nil {
+			err := s.storage.Store(file)
+			if err != nil {
 				return status.Error(codes.Internal, err.Error())
 			}
-			return stream.SendAndClose(&proto_list_album_service.UploadResponse{Name: req.GetName()})
+			return stream.SendAndClose(&proto_list_album_service.UploadResponse{
+				Name:      req.GetName(),
+				CreatedAt: timestamppb.Now()})
 		}
 		if err != nil {
 			return status.Error(codes.Internal, err.Error())
