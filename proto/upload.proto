@@ -3,12 +3,28 @@ package pb;
 option go_package = "/services/album-service/proto-list-album-service";
 
 import "google/api/annotations.proto";
-import "google/api/validate.proto";
 import "google/protobuf/timestamp.proto";
 
 service UploadService {
   rpc Upload(stream UploadRequest) returns (UploadResponse) {}
+  rpc GetAll(GetAllRequest) returns (GetAllResponse) {}
 }
+
+//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+
+message GetAllRequest {
+
+}
+
+message GetAllResponse {
+  repeated Image image = 1;
+}
+
+//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
 
 message UploadRequest {
   string name = 1;
@@ -18,4 +34,16 @@ message UploadRequest {
 message UploadResponse {
   string name = 1;
   google.protobuf.Timestamp created_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
+
+message Image {
+  int64  id = 1;
+  string name = 2;
+  string created_at = 3;
+  string updated_at = 4;
 }
