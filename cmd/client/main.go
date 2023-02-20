@@ -27,10 +27,10 @@ func main() {
 	defer conn.Close()
 
 	client := upload.NewClient(conn)
-	header := metadata.New(map[string]string{"name": "zxc.jpg"})
+	header := metadata.New(map[string]string{"name": "123.jpg"})
 	ctx := metadata.NewOutgoingContext(context.Background(), header)
 
-	name, err := client.Upload(ctx, "/home/vseznal/t4k6licnFdc.jpg")
+	name, err := client.Upload(ctx, "path")
 
 	if err != nil {
 		log.Fatalln(err)
