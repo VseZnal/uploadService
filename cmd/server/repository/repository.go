@@ -8,6 +8,7 @@ import (
 )
 
 type Database interface {
+	CreateImageInfo(name string) error
 }
 
 type DatabaseConn struct {
@@ -31,4 +32,8 @@ func NewDatabase() (*DatabaseConn, error) {
 	}
 
 	return &DatabaseConn{conn: db}, err
+}
+
+func (db DatabaseConn) CreateImageInfo(name string) error {
+	return nil
 }
