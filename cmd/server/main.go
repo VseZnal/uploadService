@@ -14,6 +14,11 @@ func main() {
 	port := conf.PortServer
 	static := conf.Static
 
+	err := upload2.Init()
+	if err != nil {
+		log.Fatalf("failed to connect: %v", err)
+	}
+
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatal(err)
