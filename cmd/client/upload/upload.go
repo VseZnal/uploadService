@@ -6,18 +6,18 @@ import (
 	"os"
 	"time"
 	"uploadService/libs/errors"
-	proto_list_album_service "uploadService/proto"
+	upload_service "uploadService/proto"
 
 	"google.golang.org/grpc"
 )
 
 type Client struct {
-	client proto_list_album_service.UploadServiceClient
+	client upload_service.UploadServiceClient
 }
 
 func NewClient(conn grpc.ClientConnInterface) Client {
 	return Client{
-		client: proto_list_album_service.NewUploadServiceClient(conn),
+		client: upload_service.NewUploadServiceClient(conn),
 	}
 }
 
@@ -46,7 +46,7 @@ func (c Client) Upload(ctx context.Context, file string) (string, error) {
 			return "", errors.LogError(err)
 		}
 
-		if err := stream.Send(&proto_list_album_service.UploadRequest{Chunk: buf[:num]}); err != nil {
+		if err := stream.Send(&upload_service.UploadRequest{Chunk: buf[:num]}); err != nil {
 			return "", errors.LogError(err)
 		}
 	}

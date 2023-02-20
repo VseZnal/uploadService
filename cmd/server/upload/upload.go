@@ -6,11 +6,13 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"io"
-	proto_list_album_service "uploadService/proto"
+	"uploadService/cmd/server/repository"
+	"uploadService/libs/errors"
+	upload_service "uploadService/proto"
 )
 
 type Server struct {
-	proto_list_album_service.UnimplementedUploadServiceServer
+	upload_service.UnimplementedUploadServiceServer
 	storage Manager
 	limit   bool
 }
@@ -21,7 +23,16 @@ func NewServer(storage Manager) Server {
 	}
 }
 
-func (s Server) Upload(stream proto_list_album_service.UploadService_UploadServer) error {
+var db repository.Database
+
+func Init() error {
+	var err error
+
+	db, err = repository.NewDatabase()
+	return err
+}
+
+func (s Server) Upload(stream upload_service.UploadService_UploadServer) error {
 	md, _ := metadata.FromIncomingContext(stream.Context())
 
 	name := md.Get("name")[0]
@@ -33,7 +44,13 @@ func (s Server) Upload(stream proto_list_album_service.UploadService_UploadServe
 			if err != nil {
 				return status.Error(codes.Internal, err.Error())
 			}
-			return stream.SendAndClose(&proto_list_album_service.UploadResponse{
+
+			err = db.CreateImageInfo(name)
+			if err != nil {
+				return errors.LogError(err)
+			}
+
+			return stream.SendAndClose(&upload_service.UploadResponse{
 				Name:      req.GetName(),
 				CreatedAt: timestamppb.Now()})
 		}
